@@ -1,0 +1,28 @@
+## Build output
+bin/
+obj/
+publish/
+
+## Installer build artifacts
+installer/*.msi
+installer/*.wixpdb
+
+## Log files
+*.jar.log
+
+## WiX
+.wix/
+
+## User-specific files
+*.user
+*.suo
+.vs/
+
+## Rider / JetBrains
+.idea/
+*.sln.iml
+
+## OS
+.DS_Store
+Thumbs.db
+.claude/

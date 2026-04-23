@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AssemblyName>mcsh</AssemblyName>
+    <RootNamespace>McSH</RootNamespace>
+    <Version>1.0.2</Version>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <Optimize>true</Optimize>
+    <!-- Bundle all DLLs into a single executable — simplifies the MSI and avoids missing-DLL errors -->
+    <PublishSingleFile>true</PublishSingleFile>
+    <!-- Pre-compile IL to native at publish time — cuts cold start time significantly -->
+    <PublishReadyToRun>true</PublishReadyToRun>
+    <!-- Disable composite mode: avoids a .NET 8 regression when combined with single-file -->
+    <PublishReadyToRunComposite>false</PublishReadyToRunComposite>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Figgle" Version="0.5.1" />
+    <PackageReference Include="fNbt" Version="1.0.0" />
+    <PackageReference Include="Spectre.Console" Version="0.49.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Embed language files into the binary so the single-file EXE is self-contained -->
+    <EmbeddedResource Include="Languages\*.json" />
+  </ItemGroup>
+
+</Project>

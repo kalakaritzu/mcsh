@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="McSH Launcher — All Releases">
+    <title>Releases — McSH Launcher</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        .os-toggle {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+        .os-toggle-btn {
+            padding: 0.45rem 1.2rem;
+            border-radius: 6px;
+            border: 1px solid rgba(255,255,255,0.12);
+            background: transparent;
+            color: rgba(255,255,255,0.5);
+            font-family: inherit;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.15s, color 0.15s, border-color 0.15s;
+        }
+        .os-toggle-btn.active {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            border-color: rgba(255,255,255,0.3);
+        }
+        .os-panel { display: none; }
+        .os-panel.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <nav id="navbar" class="scrolled">
+        <div class="nav-inner">
+            <a href="index.html" class="nav-logo">
+                <img src="assets/logo.png" alt="McSH" class="nav-logo-img">
+                McSH
+            </a>
+            <div class="nav-links">
+                <a href="index.html#features">Features</a>
+                <a href="index.html#download">Download</a>
+                <a href="index.html#commands">Commands</a>
+                <a href="releases.html">Releases</a>
+                <a href="https://github.com/kalakaritzu/mcsh" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="releases-page">
+        <div class="section-inner">
+            <h2>Releases</h2>
+            <p class="section-sub">Full version history for McSH Launcher.</p>
+
+            <div class="os-toggle">
+                <button class="os-toggle-btn active" data-panel="windows">Windows</button>
+                <button class="os-toggle-btn" data-panel="linux">Linux</button>
+            </div>
+
+            <!-- ── Windows ── -->
+            <div class="os-panel active" id="panel-windows">
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="tag tag-latest">Latest</span>
+                            <span class="release-version">v1.0.2</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.2/McSH-1.0.2.msi" class="btn btn-primary" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>What's new</h4>
+                        <ul>
+                            <li><strong>Brighter banner shape</strong> — startup icon is 30% brighter across all themes</li>
+                            <li><strong>Gradient McSH text</strong> — the McSH logo in the banner now uses the same dark→bright gradient as the icon shape</li>
+                            <li><strong>Top padding</strong> — banner has breathing room at the top of the terminal on launch</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v1.0.1</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.1/McSH-1.0.1.msi" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>What's new</h4>
+                        <ul>
+                            <li><strong>Startup banner</strong> — rich side-by-side banner on launch: themed gradient icon on the left, world quick-launch menu on the right; toggle off in settings</li>
+                            <li><strong>Console cleared on startup</strong> — banner replaces the raw shell header for a cleaner first impression</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v1.0.0</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.0/McSH-1.0.0.msi" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>What's new</h4>
+                        <ul>
+                            <li><strong>launch alias</strong> — <code>launch &lt;name&gt;</code> works everywhere <code>run</code> does; tab-completes with instance names</li>
+                            <li><strong>mod uninstall alias</strong> — <code>mod uninstall &lt;name&gt;</code> as an alias for <code>mod remove</code></li>
+                            <li><strong>instance stop</strong> — now works as a proper alias for <code>instance kill</code> instead of a dead-end message</li>
+                            <li><strong>Prompt returns after crash</strong> — the REPL prompt is reprinted after a game crash or clean exit so you can keep typing without pressing Enter blind</li>
+                            <li>Polished command reference — merged stop/kill and remove/uninstall entries; usage strings updated</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v0.9.0</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v0.9.0/McSH-0.9.0.msi" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>What's new</h4>
+                        <ul>
+                            <li><strong>Localization</strong> — full English and Spanish translations; switch with <code>settings language en</code> or <code>settings language es</code></li>
+                            <li><strong>Java management</strong> — <code>java</code> lists all detected JDK installations on your system; set a custom Java path globally for all launches</li>
+                            <li><strong>Skin &amp; cape system</strong> — <code>skin import &lt;path.png&gt;</code> saves a skin locally; <code>skin</code> to browse and apply; <code>skin cape</code> to select or disable a cape on your Minecraft account</li>
+                            <li><strong>Datapack support</strong> — <code>datapack search/install/details/open</code> via Modrinth, same flow as mods and resource packs</li>
+                            <li><strong>Instance worlds</strong> — <code>instance worlds</code> lists every world save; back it up as a zip, delete it, or open its folder from an interactive menu</li>
+                            <li><strong>Instance crash report</strong> — <code>instance crash</code> shows the latest crash report summary</li>
+                            <li><strong>Per-instance config</strong> — <code>instance config</code> lets you set window resolution, RAM, extra JVM args, environment variables, and pre/post-launch hooks per instance</li>
+                            <li><strong>Auto-backup before launch</strong> — enable in settings to automatically zip world saves before every launch</li>
+                            <li><strong>Recent activity</strong> — <code>recent</code> shows recently played worlds and servers across all instances; <code>recent run &lt;#&gt;</code> jumps straight in</li>
+                            <li><strong>Restart command</strong> — <code>restart</code> reopens McSH in a new terminal window</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v0.5.0</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v0.5.0/McSH-0.5.0.msi" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>What's new</h4>
+                        <ul>
+                            <li><strong>Fast startup</strong> — cold-start time cut from 3–4 seconds to ~1 second via ReadyToRun compilation</li>
+                            <li><strong>Mod updates via instance</strong> — <code>instance update [name]</code> checks all mods on an instance against Modrinth and updates them in one step</li>
+                            <li><strong>Installed indicator in mod search</strong> — mods you already have installed are marked <em>(installed)</em> in search results</li>
+                            <li>Fixed crash when mistyping a mod subcommand</li>
+                            <li>Fixed mod update notice printing over the prompt mid-typing</li>
+                            <li>Fixed Xbox Live auth crash on empty user hash array</li>
+                            <li>Fixed Forge version detection failing on certain API responses</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div><!-- /panel-windows -->
+
+            <!-- ── Linux ── -->
+            <div class="os-panel" id="panel-linux">
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="tag tag-latest">Latest</span>
+                            <span class="release-version">v1.0.2</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.2/McSH-1.0.2-linux-x64.tar.gz" class="btn btn-primary" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>Install</h4>
+                        <pre style="background:#111;padding:1rem;border-radius:6px;overflow-x:auto;font-size:0.85rem;"><code>tar -xzf McSH-1.0.2-linux-x64.tar.gz
+chmod +x mcsh
+sudo mv mcsh /usr/local/bin/mcsh</code></pre>
+                        <h4 style="margin-top:1rem;">What's new</h4>
+                        <ul>
+                            <li><strong>Brighter banner shape</strong> — startup icon is 30% brighter across all themes</li>
+                            <li><strong>Gradient McSH text</strong> — the McSH logo in the banner now uses the same dark→bright gradient as the icon shape</li>
+                            <li><strong>Top padding</strong> — banner has breathing room at the top of the terminal on launch</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v1.0.1</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.1/McSH-1.0.1-linux-x64.tar.gz" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>Install</h4>
+                        <pre style="background:#111;padding:1rem;border-radius:6px;overflow-x:auto;font-size:0.85rem;"><code>tar -xzf McSH-1.0.1-linux-x64.tar.gz
+chmod +x mcsh
+sudo mv mcsh /usr/local/bin/mcsh</code></pre>
+                        <h4 style="margin-top:1rem;">What's new</h4>
+                        <ul>
+                            <li><strong>Startup banner</strong> — rich side-by-side banner on launch: themed gradient icon on the left, world quick-launch menu on the right; toggle off in settings</li>
+                            <li><strong>Console cleared on startup</strong> — banner replaces the raw shell header for a cleaner first impression</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v1.0.0</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.0/McSH-1.0.0-linux-x64.tar.gz" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>Install</h4>
+                        <pre style="background:#111;padding:1rem;border-radius:6px;overflow-x:auto;font-size:0.85rem;"><code>tar -xzf McSH-1.0.0-linux-x64.tar.gz
+chmod +x mcsh
+sudo mv mcsh /usr/local/bin/mcsh</code></pre>
+                        <h4 style="margin-top:1rem;">What's new</h4>
+                        <ul>
+                            <li><strong>launch alias</strong> — <code>launch &lt;name&gt;</code> as an alternative to <code>run</code></li>
+                            <li><strong>mod uninstall alias</strong> — <code>mod uninstall &lt;name&gt;</code> as an alias for <code>mod remove</code></li>
+                            <li><strong>instance stop</strong> — now works as a proper alias for <code>instance kill</code></li>
+                            <li><strong>Prompt returns after crash</strong> — REPL prompt reprinted after game exit so you can keep typing</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v0.9.0</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v0.9.0/McSH-0.9.0-linux-x64.tar.gz" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>Install</h4>
+                        <pre style="background:#111;padding:1rem;border-radius:6px;overflow-x:auto;font-size:0.85rem;"><code>tar -xzf McSH-0.9.0-linux-x64.tar.gz
+chmod +x mcsh
+sudo mv mcsh /usr/local/bin/mcsh</code></pre>
+                        <h4 style="margin-top:1rem;">What's new</h4>
+                        <ul>
+                            <li><strong>Localization</strong> — full English and Spanish translations</li>
+                            <li><strong>Java management</strong> — <code>java</code> lists detected installations; set a custom path globally</li>
+                            <li><strong>Skin &amp; cape system</strong> — import skins, apply to your account, toggle capes</li>
+                            <li><strong>Datapack support</strong> — search and install via Modrinth</li>
+                            <li><strong>Instance worlds, config, crash report</strong> — full world management and per-instance configuration</li>
+                            <li><strong>Recent activity</strong> — <code>recent</code> across all instances</li>
+                            <li>All other v0.9.0 additions</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="release-entry">
+                    <div class="release-header">
+                        <div class="release-title">
+                            <span class="release-version">v0.5.0</span>
+                        </div>
+                        <div class="release-meta">
+                            <span class="release-date">April 2026</span>
+                            <a href="https://github.com/kalakaritzu/mcsh/releases/download/v0.5.0/McSH-0.5.0-linux-x64.tar.gz" class="btn btn-outline" target="_blank" rel="noopener">Download</a>
+                        </div>
+                    </div>
+                    <div class="release-body">
+                        <h4>Install</h4>
+                        <pre style="background:#111;padding:1rem;border-radius:6px;overflow-x:auto;font-size:0.85rem;"><code>tar -xzf McSH-0.5.0-linux-x64.tar.gz
+chmod +x mcsh
+sudo mv mcsh /usr/local/bin/mcsh</code></pre>
+                        <h4 style="margin-top:1rem;">What's new</h4>
+                        <ul>
+                            <li><strong>Fast startup</strong> — cold-start time cut from 3–4 seconds to ~1 second via ReadyToRun compilation</li>
+                            <li><strong>Mod updates via instance</strong> — <code>instance update [name]</code> updates all mods on an instance in one step</li>
+                            <li><strong>Installed indicator in mod search</strong> — already-installed mods are marked in search results</li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div><!-- /panel-linux -->
+
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-left">
+                <span class="footer-logo">McSH</span>
+                <span class="footer-copy">Released under the MIT License</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/kalakaritzu/mcsh" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/kalakaritzu/mcsh/releases" target="_blank" rel="noopener">Releases</a>
+                <a href="https://github.com/kalakaritzu/mcsh/issues" target="_blank" rel="noopener">Issues</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+        document.querySelector('.nav-toggle').addEventListener('click', () => {
+            navbar.classList.toggle('nav-open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => navbar.classList.remove('nav-open'));
+        });
+
+        // OS toggle
+        document.querySelectorAll('.os-toggle-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.os-toggle-btn').forEach(b => b.classList.remove('active'));
+                document.querySelectorAll('.os-panel').forEach(p => p.classList.remove('active'));
+                btn.classList.add('active');
+                document.getElementById('panel-' + btn.dataset.panel).classList.add('active');
+            });
+        });
+
+        // Auto-switch to Linux tab if ?os=linux in URL
+        if (new URLSearchParams(location.search).get('os') === 'linux') {
+            document.querySelector('[data-panel="linux"]').click();
+        }
+    </script>
+
+</body>
+</html>

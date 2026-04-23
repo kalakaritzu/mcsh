@@ -1,0 +1,98 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs"
+     xmlns:ui="http://wixtoolset.org/schemas/v4/wxs/ui">
+
+  <Package
+    Name="McSH Launcher"
+    Manufacturer="McSH"
+    Version="1.0.2"
+    UpgradeCode="E3A1B2C3-D4E5-F6A7-B8C9-D0E1F2A3B4C5"
+    Language="1033"
+    InstallerVersion="500">
+
+    <MediaTemplate EmbedCab="yes" />
+    <MajorUpgrade DowngradeErrorMessage="A newer version of McSH Launcher is already installed." />
+
+    <!-- Required by WixUI_Advanced for scope selection -->
+    <Property Id="ApplicationFolderName" Value="McSH" />
+    <Property Id="WixAppFolder" Value="WixPerMachineFolder" />
+
+    <!-- Per-machine install: C:\Program Files\McSH\ (64-bit) -->
+    <StandardDirectory Id="ProgramFiles64Folder">
+      <Directory Id="APPLICATIONFOLDER" Name="McSH">
+
+        <Component Id="McSH_Executable" Guid="A1B2C3D4-E5F6-7890-ABCD-EF1234567890">
+          <File Id="mcsh.exe"
+                Source="$(sys.SOURCEFILEDIR)..\publish-win\mcsh.exe"
+                KeyPath="yes" />
+        </Component>
+
+        <!-- PATH registration — HKMU auto-maps to HKLM (all users) or HKCU (just me) -->
+        <Component Id="McSH_PathEnv" Guid="B2C3D4E5-F6A7-8901-BCDE-F12345678901">
+          <RegistryValue Root="HKMU" Key="Software\McSH" Name="InstallDir"
+                         Value="[APPLICATIONFOLDER]" Type="string" KeyPath="yes" />
+          <Environment Id="McSH_PATH" Name="PATH" Value="[APPLICATIONFOLDER]"
+                       Action="set" Part="last" Permanent="no" System="no" />
+        </Component>
+
+      </Directory>
+    </StandardDirectory>
+
+    <!-- Per-user install: %LocalAppData%\McSH\ -->
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="WixPerUserFolder" Name="McSH" />
+    </StandardDirectory>
+
+    <!-- Desktop shortcut -->
+    <StandardDirectory Id="DesktopFolder">
+      <Component Id="McSH_DesktopShortcut" Guid="C3D4E5F6-A7B8-9012-CDEF-123456789ABC">
+        <Shortcut Id="DesktopShortcut_McSH"
+                  Name="McSH Launcher"
+                  Description="McSH — Minecraft terminal launcher"
+                  Target="[SystemFolder]cmd.exe"
+                  Arguments="/k mcsh"
+                  WorkingDirectory="PersonalFolder" />
+        <RegistryValue Root="HKMU" Key="Software\McSH" Name="DesktopShortcut"
+                       Value="1" Type="integer" KeyPath="yes" />
+      </Component>
+    </StandardDirectory>
+
+    <!-- Start Menu shortcut -->
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Directory Id="McSH_StartMenuDir" Name="McSH">
+        <Component Id="McSH_StartMenuShortcut" Guid="D4E5F6A7-B8C9-0123-DEF0-23456789ABCD">
+          <Shortcut Id="StartMenuShortcut_McSH"
+                    Name="McSH Launcher"
+                    Description="McSH — Minecraft terminal launcher"
+                    Target="[SystemFolder]cmd.exe"
+                    Arguments="/k mcsh"
+                    WorkingDirectory="PersonalFolder" />
+          <RemoveFolder Id="Remove_McSH_StartMenuDir" On="uninstall" />
+          <RegistryValue Root="HKMU" Key="Software\McSH" Name="StartMenuShortcut"
+                         Value="1" Type="integer" KeyPath="yes" />
+        </Component>
+      </Directory>
+    </StandardDirectory>
+
+    <Feature Id="MainFeature" Title="McSH Launcher" Level="1">
+      <ComponentRef Id="McSH_Executable" />
+      <ComponentRef Id="McSH_PathEnv" />
+      <ComponentRef Id="McSH_DesktopShortcut" />
+      <ComponentRef Id="McSH_StartMenuShortcut" />
+    </Feature>
+
+    <!-- Multi-step UI: Welcome → Scope (just me / everyone) → Install Dir → Progress → Finish -->
+    <ui:WixUI Id="WixUI_Advanced" />
+    <WixVariable Id="WixUILicenseRtf" Value="installer\License.rtf" />
+
+    <!-- Override: force the scope dialog to always show, even when running elevated.
+         WixUI_Advanced skips InstallScopeDlg when Privileged=1 (admin). These higher-order
+         Publish entries fire last and override the built-in conditional transitions. -->
+    <UI>
+      <Publish Dialog="AdvancedWelcomeEulaDlg" Control="Install"
+               Event="NewDialog" Value="InstallScopeDlg" Order="10" Condition="1" />
+      <Publish Dialog="AdvancedWelcomeEulaDlg" Control="Install"
+               Event="NewDialog" Value="InstallDirDlg" Order="11" Condition="0" />
+    </UI>
+
+  </Package>
+</Wix>

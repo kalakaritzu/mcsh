@@ -1,0 +1,530 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="McSH â€” A fast, lightweight Minecraft launcher for the terminal. No GUI. No bloat.">
+    <title>McSH Launcher</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/png" href="favicon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav id="navbar">
+        <div class="nav-inner">
+            <a href="#" class="nav-logo">
+                <img src="assets/logo.png" alt="McSH" class="nav-logo-img">
+                McSH
+            </a>
+            <div class="nav-links">
+                <a href="#features">Features</a>
+                <a href="#download">Download</a>
+                <a href="#commands">Commands</a>
+                <a href="releases.html">Releases</a>
+                <a href="https://github.com/kalakaritzu/mcsh" target="_blank" rel="noopener">GitHub</a>
+            </div>
+            <button class="nav-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-inner">
+            <pre class="hero-ascii" aria-label="McSH">███╗   ███╗ ██████╗███████╗██╗  ██╗
+████╗ ████║██╔════╝██╔════╝██║  ██║
+██╔████╔██║██║     ███████╗███████║
+██║╚██╔╝██║██║     ╚════██║██╔══██║
+██║ ╚═╝ ██║╚██████╗███████║██║  ██║
+╚═╝     ╚═╝ ╚═════╝╚══════╝╚═╝  ╚═╝</pre>
+            <p class="hero-tagline">A fast, lightweight Minecraft launcher for the terminal.</p>
+            <div class="hero-buttons">
+                <a href="#download" class="btn btn-primary">Download v1.0.2</a>
+                <a href="https://github.com/kalakaritzu/mcsh" class="btn btn-outline" target="_blank" rel="noopener">View on GitHub</a>
+            </div>
+        </div>
+        <div class="hero-fade"></div>
+    </section>
+
+    <section class="downloads" id="download">
+        <div class="section-inner">
+            <h2>Download</h2>
+            <p class="section-sub">Self-contained â€” no dependencies required</p>
+
+            <div class="download-card">
+                <div class="download-meta">
+                    <span class="tag tag-latest">Latest</span>
+                    <span class="tag">v1.0.2</span>
+                    <span class="tag">Windows x64</span>
+                    <span class="tag">~35 MB</span>
+                </div>
+                <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.2/McSH-1.0.0.msi" class="btn btn-primary btn-large" target="_blank" rel="noopener">
+                    Download for Windows
+                </a>
+            </div>
+
+            <div class="download-card" style="margin-top: 1rem;">
+                <div class="download-meta">
+                    <span class="tag tag-latest">Latest</span>
+                    <span class="tag">v1.0.2</span>
+                    <span class="tag">Linux x64</span>
+                    <span class="tag">~35 MB</span>
+                </div>
+                <a href="https://github.com/kalakaritzu/mcsh/releases/download/v1.0.2/McSH-1.0.0-linux-x64.tar.gz" class="btn btn-primary btn-large" target="_blank" rel="noopener">
+                    Download for Linux
+                </a>
+            </div>
+
+            <div style="display:flex; gap: 1.5rem; margin-top: 1.2rem;">
+                <a href="releases.html" class="all-releases-link">Windows releases</a>
+                <a href="releases.html?os=linux" class="all-releases-link">Linux releases</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="features" id="features">
+        <div class="section-inner">
+            <h2>Features</h2>
+            <p class="section-sub">Everything you need. Nothing you don't.</p>
+
+            <!-- â”€â”€ Instances â”€â”€ -->
+            <div class="feat-group">
+                <button class="feat-group-header" aria-expanded="false">
+                    <span>Instances</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Instance Management</h3>
+                            <p>Create, run, rename, clone, and delete isolated instances. Switch between them instantly with a single command.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Quick CLI Launch</h3>
+                            <p>Skip the REPL entirely: <code>mcsh run &lt;name&gt;</code> launches an instance straight from any terminal window.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Per-Instance Config</h3>
+                            <p><code>instance config</code> sets window resolution, RAM, extra JVM args, environment variables, and pre/post-launch hooks per instance.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>World Management</h3>
+                            <p><code>instance worlds</code> lists every save. Backup a world as a zip, delete it, or open its folder â€” all without leaving the terminal.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Auto-Backup</h3>
+                            <p>Enable in settings to automatically zip world saves before every launch. Never lose progress to a bad update.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Crash Detection</h3>
+                            <p><code>instance crash</code> shows the latest crash report summary so you can diagnose what went wrong without digging through log folders.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Export &amp; Backup</h3>
+                            <p><code>instance export</code> zips a full instance for sharing. <code>instance backup</code> archives world saves with a timestamp.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Prism / MultiMC Import</h3>
+                            <p><code>instance prism &lt;path&gt;</code> imports an existing Prism or MultiMC instance â€” auto-detects version and mod loader from config files.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>.mrpack Export</h3>
+                            <p><code>instance mrpack</code> exports your instance as a standards-compliant Modrinth pack. Compatible with Modrinth App, Prism, and McSH.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Live Console</h3>
+                            <p><code>console</code> attaches to a running instance's output with color-coded warnings and errors. Press ESC to detach without stopping the game.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Recent Activity</h3>
+                            <p><code>recent</code> shows recently played worlds and servers across all instances. <code>recent run &lt;#&gt;</code> jumps straight back in.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- â”€â”€ Mods & Content â”€â”€ -->
+            <div class="feat-group">
+                <button class="feat-group-header" aria-expanded="false">
+                    <span>Mods &amp; Content</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Modrinth Integration</h3>
+                            <p>Search, install, and manage mods, resource packs, shaders, plugins, and data packs directly from the terminal â€” no browser needed.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Modpack Search &amp; Install</h3>
+                            <p>Search Modrinth for modpacks, pick any version from a grouped version picker, and install everything â€” mods, configs, resource packs â€” in one command.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Modpack Updates</h3>
+                            <p><code>modpack update</code> checks all your modpack instances against Modrinth, shows what's outdated, and upgrades in one step â€” optionally copying your worlds.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Mod Profiles</h3>
+                            <p>Save named mod loadouts and switch between them instantly. <code>mod profile save</code> snapshots which mods are enabled â€” <code>mod profile load</code> restores them.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Mod Toggle</h3>
+                            <p><code>mod toggle &lt;name&gt;</code> enables or disables a mod without deleting it â€” handy for testing compatibility or switching playstyles.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Mod Updates</h3>
+                            <p><code>instance update</code> checks every installed mod against Modrinth and updates them all in one step. Already-installed mods are marked in search results.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- â”€â”€ Java â”€â”€ -->
+            <div class="feat-group">
+                <button class="feat-group-header" aria-expanded="false">
+                    <span>Java</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Java Auto-Install</h3>
+                            <p>Missing Java or wrong version? McSH downloads and manages the exact JDK each modpack requires â€” no admin rights, no PATH changes.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Java Management</h3>
+                            <p><code>java</code> lists every JDK detected on your system. Set a custom Java path globally with one command â€” McSH uses it for all launches.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Fast Launch</h3>
+                            <p>Aikar G1GC flags applied automatically. Background pre-warm on <code>instance select</code> and a differential asset cache mean <code>i run</code> is near-instant on warm launches.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- â”€â”€ Account & Identity â”€â”€ -->
+            <div class="feat-group">
+                <button class="feat-group-header" aria-expanded="false">
+                    <span>Account &amp; Identity</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Microsoft Auth</h3>
+                            <p>Full Microsoft Device Code Flow with automatic background token refresh. Authenticate once, stay signed in.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Multi-Account</h3>
+                            <p>Sign in with multiple Microsoft accounts and switch between them instantly. <code>auth login &lt;alias&gt;</code> saves any account. <code>auth switch</code> makes it active.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Skins &amp; Capes</h3>
+                            <p>Import skin PNGs locally, browse your collection, and apply them to your Minecraft account instantly. Select and toggle capes from the same menu.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- â”€â”€ UI & Customization â”€â”€ -->
+            <div class="feat-group">
+                <button class="feat-group-header" aria-expanded="false">
+                    <span>UI &amp; Customization</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Themes</h3>
+                            <p>Six built-in color themes â€” Crimson, Arctic, Forest, Amber, Violet, Steel. Switch instantly with <code>settings theme &lt;name&gt;</code> and it persists across restarts.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Localization</h3>
+                            <p>Full English and Spanish translations built in. Switch at any time with <code>settings language en</code> or <code>settings language es</code>.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Tab Completion</h3>
+                            <p>Context-aware completions for all commands, subcommands, and instance names. Hit Tab anywhere in the REPL.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Update Checker</h3>
+                            <p>Notifies you on startup when a newer release is available. Run <code>update</code> to download and install it in one step.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Cross-Platform</h3>
+                            <p>Runs natively on Windows and Linux. Data stored in <code>%APPDATA%\McSH</code> on Windows and <code>~/.local/share/McSH</code> on Linux.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Low Memory</h3>
+                            <p>The launcher itself uses under 30MB of RAM â€” leaving the rest for the game where it belongs.</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-accent"></div>
+                            <h3>Fast Startup</h3>
+                            <p>Launches in about 1 second. No splash screens, no telemetry, no background processes phoning home.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="commands" id="commands">
+        <div class="section-inner">
+            <h2>Command Reference</h2>
+            <p class="section-sub">All commands available in the McSH REPL.</p>
+
+            <div class="feat-group">
+                <button class="feat-group-header cmd-group-header" aria-expanded="false">
+                    <span>Instances</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <table class="cmd-table">
+                        <colgroup><col class="col-cmd"><col class="col-desc"></colgroup>
+                        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>instance create</code></td><td>Create a new Minecraft instance (guided wizard)</td></tr>
+                            <tr><td><code>instance list</code></td><td>List all instances with running status</td></tr>
+                            <tr><td><code>instance select &lt;name&gt;</code></td><td>Set the active instance and pre-warm</td></tr>
+                            <tr><td><code>instance run [name]</code></td><td>Launch an instance â€” prompts if none selected</td></tr>
+                            <tr><td><code>run / launch &lt;name&gt;</code></td><td>Quick-launch from any terminal (alias: r)</td></tr>
+                            <tr><td><code>instance stop / kill &lt;name&gt;</code></td><td>Force-kill the running instance</td></tr>
+                            <tr><td><code>instance info [name]</code></td><td>Show version, loader, RAM, mods, path</td></tr>
+                            <tr><td><code>instance open [name]</code></td><td>Open instance folder in File Explorer</td></tr>
+                            <tr><td><code>instance clone &lt;name&gt;</code></td><td>Duplicate an existing instance</td></tr>
+                            <tr><td><code>instance rename &lt;name&gt;</code></td><td>Rename an instance</td></tr>
+                            <tr><td><code>instance delete &lt;name&gt;</code></td><td>Delete an instance</td></tr>
+                            <tr><td><code>instance config [name]</code></td><td>Configure window, RAM, JVM args, env vars, hooks</td></tr>
+                            <tr><td><code>instance worlds [name]</code></td><td>Browse worlds â€” backup, delete, or open folder</td></tr>
+                            <tr><td><code>instance crash [name]</code></td><td>Show the latest crash report</td></tr>
+                            <tr><td><code>instance export [name]</code></td><td>Zip a full instance for sharing or backup</td></tr>
+                            <tr><td><code>instance backup [name]</code></td><td>Zip world saves with a timestamp</td></tr>
+                            <tr><td><code>instance import &lt;path&gt;</code></td><td>Import a .mrpack modpack file</td></tr>
+                            <tr><td><code>instance mrpack</code></td><td>Export instance as a shareable .mrpack</td></tr>
+                            <tr><td><code>instance prism &lt;path&gt;</code></td><td>Import a Prism Launcher / MultiMC instance</td></tr>
+                            <tr><td><code>instance update [name]</code></td><td>Update all mods to their latest versions</td></tr>
+                            <tr><td><code>console</code></td><td>Attach to a running instance's console (ESC to detach)</td></tr>
+                            <tr><td><code>recent</code></td><td>Show recently played worlds and servers</td></tr>
+                            <tr><td><code>recent run &lt;#&gt;</code></td><td>Jump straight into a recent entry</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feat-group">
+                <button class="feat-group-header cmd-group-header" aria-expanded="false">
+                    <span>Modpacks</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <table class="cmd-table">
+                        <colgroup><col class="col-cmd"><col class="col-desc"></colgroup>
+                        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>modpack search &lt;query&gt;</code></td><td>Search Modrinth for modpacks</td></tr>
+                            <tr><td><code>modpack install &lt;#&gt;</code></td><td>Install with version picker â€” grouped by MC version</td></tr>
+                            <tr><td><code>modpack update</code></td><td>Check all modpack instances for newer versions</td></tr>
+                            <tr><td><code>instance import &lt;path&gt;</code></td><td>Import a local .mrpack file</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feat-group">
+                <button class="feat-group-header cmd-group-header" aria-expanded="false">
+                    <span>Mods &amp; Content</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <table class="cmd-table">
+                        <colgroup><col class="col-cmd"><col class="col-desc"></colgroup>
+                        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>mod search &lt;query&gt;</code></td><td>Search Modrinth for mods</td></tr>
+                            <tr><td><code>mod install &lt;#&gt;</code></td><td>Install a mod from search results</td></tr>
+                            <tr><td><code>mod details &lt;#&gt;</code></td><td>View full mod details and install prompt</td></tr>
+                            <tr><td><code>mod list</code></td><td>List installed mods</td></tr>
+                            <tr><td><code>mod toggle &lt;name&gt;</code></td><td>Enable or disable a mod</td></tr>
+                            <tr><td><code>mod remove / uninstall &lt;name&gt;</code></td><td>Uninstall a mod</td></tr>
+                            <tr><td><code>mod import &lt;path.jar&gt;</code></td><td>Import a local .jar</td></tr>
+                            <tr><td><code>mod profile save/load/list/delete</code></td><td>Manage named mod loadouts</td></tr>
+                            <tr><td><code>resourcepack search/install/details</code></td><td>Resource packs via Modrinth (alias: rp)</td></tr>
+                            <tr><td><code>shader search/install/details</code></td><td>Shaders via Modrinth</td></tr>
+                            <tr><td><code>plugin search/install/details</code></td><td>Server plugins via Modrinth (alias: pl)</td></tr>
+                            <tr><td><code>datapack search/install/details</code></td><td>Data packs via Modrinth (alias: dp)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feat-group">
+                <button class="feat-group-header cmd-group-header" aria-expanded="false">
+                    <span>Account, Skins &amp; Java</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <table class="cmd-table">
+                        <colgroup><col class="col-cmd"><col class="col-desc"></colgroup>
+                        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>auth login [alias]</code></td><td>Sign in with Microsoft Device Code Flow</td></tr>
+                            <tr><td><code>auth logout</code></td><td>Remove stored credentials</td></tr>
+                            <tr><td><code>auth status</code></td><td>Show current authentication state</td></tr>
+                            <tr><td><code>auth accounts</code></td><td>List all saved accounts</td></tr>
+                            <tr><td><code>auth switch &lt;alias&gt;</code></td><td>Switch the active account</td></tr>
+                            <tr><td><code>skin</code></td><td>Browse saved skins and apply one to your account</td></tr>
+                            <tr><td><code>skin import &lt;path.png&gt;</code></td><td>Import a local skin PNG</td></tr>
+                            <tr><td><code>skin cape</code></td><td>Select or disable a cape on your account</td></tr>
+                            <tr><td><code>skin delete &lt;name&gt;</code></td><td>Remove a saved skin</td></tr>
+                            <tr><td><code>java</code></td><td>List detected Java installations and set a custom path</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="feat-group">
+                <button class="feat-group-header cmd-group-header" aria-expanded="false">
+                    <span>Settings &amp; General</span>
+                    <svg class="feat-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+                </button>
+                <div class="feat-group-body">
+                    <table class="cmd-table">
+                        <colgroup><col class="col-cmd"><col class="col-desc"></colgroup>
+                        <thead><tr><th>Command</th><th>Description</th></tr></thead>
+                        <tbody>
+                            <tr><td><code>settings</code></td><td>Open the interactive settings menu (alias: s)</td></tr>
+                            <tr><td><code>settings theme &lt;name&gt;</code></td><td>Switch color theme (crimson, arctic, forest, amber, violet, steel)</td></tr>
+                            <tr><td><code>settings language &lt;en|es&gt;</code></td><td>Switch language</td></tr>
+                            <tr><td><code>help</code></td><td>Quick-start guide</td></tr>
+                            <tr><td><code>ref</code></td><td>Full in-app command reference (alias: c)</td></tr>
+                            <tr><td><code>version</code></td><td>Show McSH version and runtime info</td></tr>
+                            <tr><td><code>update</code></td><td>Update McSH to the latest version</td></tr>
+                            <tr><td><code>restart</code></td><td>Restart McSH in a new terminal window</td></tr>
+                            <tr><td><code>clear</code></td><td>Clear the terminal screen (alias: cls)</td></tr>
+                            <tr><td><code>exit</code></td><td>Exit McSH</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="install-section">
+        <div class="section-inner install-inner">
+            <div class="install-text">
+                <h2>Get started in seconds</h2>
+                <p>Download the installer, run it, and type <code>mcsh</code> in any terminal. That's it.</p>
+            </div>
+            <div class="terminal-block">
+                <div class="terminal-bar">
+                    <span class="t-dot"></span><span class="t-dot"></span><span class="t-dot"></span>
+                    <span class="t-title">Terminal</span>
+                </div>
+                <div class="terminal-body">
+                    <p><span class="t-prompt">C:\&gt;</span> <span class="t-cmd">mcsh</span></p>
+                    <pre class="t-out t-banner">  __  __      ____  _   _
+ |  \/  | ___/ ___|| | | |
+ | |\/| |/ __\___ \| |_| |
+ | |  | | (__ ___) |  _  |
+ |_|  |_|\___|____/|_| |_|</pre>
+                    <p class="t-out t-dim">v1.0.2  |  Type 'help' to begin</p>
+                    <p class="t-out">&nbsp;</p>
+                    <p><span class="t-prompt">&gt;</span> <span class="t-cmd">instance create</span></p>
+                    <p class="t-out t-dim">Version: 1.21.4</p>
+                    <p class="t-out t-dim">Loader: Fabric</p>
+                    <p class="t-out t-dim">Name: my-instance</p>
+                    <p class="t-out t-green">Instance created.</p>
+                    <p><span class="t-prompt">[my-instance]&gt;</span> <span class="t-cmd">launch</span></p>
+                    <p class="t-out t-dim">Launching Minecraft 1.21.4 (Fabric)...</p>
+                    <p class="t-cursor">_</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-inner">
+            <div class="footer-left">
+                <span class="footer-logo">McSH</span>
+                <span class="footer-copy">Released under the MIT License</span>
+            </div>
+            <div class="footer-links">
+                <a href="https://github.com/kalakaritzu/mcsh" target="_blank" rel="noopener">GitHub</a>
+                <a href="https://github.com/kalakaritzu/mcsh/releases" target="_blank" rel="noopener">Releases</a>
+                <a href="https://github.com/kalakaritzu/mcsh/issues" target="_blank" rel="noopener">Issues</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            navbar.classList.toggle('scrolled', window.scrollY > 60);
+        });
+
+        // Hamburger menu
+        document.querySelector('.nav-toggle').addEventListener('click', () => {
+            navbar.classList.toggle('nav-open');
+        });
+        document.querySelectorAll('.nav-links a').forEach(a => {
+            a.addEventListener('click', () => navbar.classList.remove('nav-open'));
+        });
+
+        // Feature accordion
+        document.querySelectorAll('.feat-group-header').forEach(btn => {
+            const body = btn.nextElementSibling;
+            body.style.maxHeight = '0px';
+
+            btn.addEventListener('click', () => {
+                const open = btn.getAttribute('aria-expanded') === 'true';
+                if (open) {
+                    body.style.maxHeight = '0px';
+                    btn.setAttribute('aria-expanded', 'false');
+                } else {
+                    body.style.maxHeight = body.scrollHeight + 'px';
+                    btn.setAttribute('aria-expanded', 'true');
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
