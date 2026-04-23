@@ -8,10 +8,10 @@
   "app.update_available": "Actualización disponible:",
   "app.you_have": "tienes",
   "app.type_update": "Escribe 'update' para instalarlo.",
-  "app.subtitle": "v1.0.2  |  Escribe 'help' para comenzar",
+  "app.subtitle": "v1.0.3  |  Escribe 'help' para comenzar",
   "app.mod_updates_available": "{0} actualización{1} de mod disponible en",
   "app.mod_run_update": "ejecuta 'instance update'",
-  "app.version_display": "McSH v1.0.2",
+  "app.version_display": "McSH v1.0.3",
 
   "tip.0": "Tip: escribe 'ref' para ver todos los comandos.",
   "tip.1": "Tip: usa Tab para autocompletar comandos.",

@@ -9,7 +9,7 @@ public class AppSettings
     /// </summary>
     public bool ClearScreenOnCommand { get; set; } = false;
 
-    public bool ShowBannerOnStartup { get; set; } = true;
+    public bool ShowBannerOnStartup { get; set; } = false;
 
     /// <summary>
     /// When enabled, includes full raw HTTP bodies/errors in some failures.
