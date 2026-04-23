@@ -109,6 +109,7 @@ public class SettingsCommand
                         "",
                         $"[bold]{L("settings.general")}[/]",
                         $"  {L("settings.show_banner")}: {(s.ShowBannerOnStartup ? on : off)}",
+                        $"  {L("settings.show_banner_shape")}: {(s.ShowBannerShape ? on : off)}",
                         $"  {L("settings.auto_backup")}: {(s.AutoBackupBeforeLaunch ? on : off)}",
                         $"  {L("settings.recent_on_startup")}: {recentLabel}",
                         $"  {L("settings.verbose_errors")}: {(s.VerboseErrors ? on : off)}",
@@ -172,6 +173,8 @@ public class SettingsCommand
                 s.ConsoleHighlightWarnings = !s.ConsoleHighlightWarnings;
 
             // ── General ───────────────────────────────────────────────────────
+            else if (choice.Contains(L("settings.show_banner_shape"), StringComparison.Ordinal))
+                s.ShowBannerShape = !s.ShowBannerShape;
             else if (choice.Contains(L("settings.show_banner"), StringComparison.Ordinal))
                 s.ShowBannerOnStartup = !s.ShowBannerOnStartup;
             else if (choice.Contains(L("settings.auto_backup"), StringComparison.Ordinal))

@@ -50,6 +50,7 @@
   "settings.highlight_warnings": "Resaltar advertencias",
   "settings.general": "General",
   "settings.show_banner": "Mostrar banner al iniciar",
+  "settings.show_banner_shape": "Mostrar forma del banner",
   "settings.auto_backup": "Copia de seguridad antes de lanzar",
   "settings.recent_on_startup": "Recientes al iniciar",
   "settings.verbose_errors": "Errores detallados",

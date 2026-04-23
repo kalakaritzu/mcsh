@@ -11,6 +11,9 @@ public class AppSettings
 
     public bool ShowBannerOnStartup { get; set; } = false;
 
+    /// <summary>Show the ASCII shape to the left of the banner text.</summary>
+    public bool ShowBannerShape { get; set; } = false;
+
     /// <summary>
     /// When enabled, includes full raw HTTP bodies/errors in some failures.
     /// </summary>

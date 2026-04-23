@@ -50,6 +50,7 @@
   "settings.highlight_warnings": "Highlight warnings",
   "settings.general": "General",
   "settings.show_banner": "Show banner on startup",
+  "settings.show_banner_shape": "Show banner shape",
   "settings.auto_backup": "Auto-backup before launch",
   "settings.recent_on_startup": "Recent on startup",
   "settings.verbose_errors": "Verbose errors",

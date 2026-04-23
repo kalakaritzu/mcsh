@@ -187,17 +187,24 @@ public static class BannerService
         Console.WriteLine();
         Console.WriteLine();
 
-        var right     = BuildRight(auth);
-        int totalRows = Math.Max(Icon.Length, right.Count);
+        var right      = BuildRight(auth);
+        bool showShape = SettingsService.Current.ShowBannerShape;
+        int totalRows  = showShape
+            ? Math.Max(Icon.Length, right.Count)
+            : right.Count;
 
         for (int i = 0; i < totalRows; i++)
         {
-            var iconLine  = i < Icon.Length  ? Icon[i]  : "";
-            var rightLine = i < right.Count  ? right[i] : "";
+            var rightLine = i < right.Count ? right[i] : "";
 
-            Console.Write(GradColor(i, totalRows));
-            Console.Write(iconLine.PadRight(IconWidth));
-            Console.Write(Reset);
+            if (showShape)
+            {
+                var iconLine = i < Icon.Length ? Icon[i] : "";
+                Console.Write(GradColor(i, totalRows));
+                Console.Write(iconLine.PadRight(IconWidth));
+                Console.Write(Reset);
+            }
+
             Console.WriteLine(rightLine);
         }
 
