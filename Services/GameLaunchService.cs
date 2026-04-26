@@ -718,7 +718,10 @@ public class GameLaunchService
             ["${natives_directory}"] = nativesDir,
             ["${launcher_name}"]     = "McSH",
             ["${launcher_version}"]  = "0.1.0",
-            ["${classpath}"]         = classpath,
+            ["${classpath}"]          = classpath,
+            // NeoForge / Forge bootstrap module-path substitutions
+            ["${library_directory}"]  = PathService.LibrariesDir,
+            ["${classpath_separator}"] = Path.PathSeparator.ToString(),
             // Suppress any unrecognised substitutions so they don't leak into args
             ["${resolution_width}"]  = instance.Fullscreen ? "854" : instance.WindowWidth.ToString(),
             ["${resolution_height}"] = instance.Fullscreen ? "480" : instance.WindowHeight.ToString(),
