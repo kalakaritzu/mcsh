@@ -43,4 +43,21 @@ public static class PlatformHelper
         try { Process.Start(psi); }
         catch { /* silently ignore if no file manager is available */ }
     }
+
+    /// <summary>
+    /// Opens a file with the platform's default associated application.
+    /// </summary>
+    public static void OpenFile(string path)
+    {
+        try
+        {
+            if (IsWindows)
+                Process.Start(new ProcessStartInfo { FileName = path, UseShellExecute = true });
+            else if (IsMacOS)
+                Process.Start(new ProcessStartInfo { FileName = "open", ArgumentList = { path }, UseShellExecute = false });
+            else
+                Process.Start(new ProcessStartInfo { FileName = "xdg-open", ArgumentList = { path }, UseShellExecute = false });
+        }
+        catch { /* silently ignore */ }
+    }
 }

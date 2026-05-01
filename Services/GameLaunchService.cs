@@ -52,6 +52,9 @@ public class GameLaunchService
 
     public async Task<bool> PrepareAndLaunchAsync(Instance instance, string? quickPlayArg = null)
     {
+        if (instance.IsServer)
+            return await PrepareAndLaunchServerAsync(instance);
+
         if (SettingsService.Current.AutoBackupBeforeLaunch)
         {
             try
@@ -64,6 +67,221 @@ public class GameLaunchService
             }
         }
         return await PrepareAndLaunchClientAsync(instance, quickPlayArg);
+    }
+
+    // ══════════════════════════════════════════════════════════════════════════
+    // DEDICATED SERVER
+    // ══════════════════════════════════════════════════════════════════════════
+
+    private async Task<bool> PrepareAndLaunchServerAsync(Instance instance)
+    {
+        var ver     = instance.MinecraftVersion;
+        var name    = instance.Name;
+        var instDir = PathService.InstanceDir(instance.Name);
+        Directory.CreateDirectory(instDir);
+
+        // 1. Fetch version JSON (needed for Java version + server JAR URL)
+        JsonDocument? vDoc = null;
+        await AnsiConsole.Status()
+            .Spinner(Spinner.Known.Dots)
+            .SpinnerStyle(UiTheme.SpinnerStyle)
+            .StartAsync(McSH.Services.LanguageService.Get("launch.preparing"), async _ =>
+            {
+                vDoc = await _mojang.GetVersionJsonAsync(ver);
+            });
+
+        if (vDoc is null)
+        {
+            AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]Could not fetch version metadata for {Markup.Escape(ver)}.[/]");
+            return false;
+        }
+
+        var root = vDoc.RootElement;
+
+        // 2. Ensure correct Java version
+        if (root.TryGetProperty("javaVersion", out var jv) &&
+            jv.TryGetProperty("majorVersion", out var reqVerEl))
+        {
+            if (!await EnsureJavaAsync(reqVerEl.GetInt32()))
+                return false;
+        }
+        else
+        {
+            if (!await EnsureJavaAsync(21)) return false; // safe default for 1.17+
+        }
+
+        // 3. Download server JAR if not already present
+        var serverJar = Path.Combine(instDir, "server.jar");
+        if (!File.Exists(serverJar))
+        {
+            if (!root.TryGetProperty("downloads", out var dl) ||
+                !dl.TryGetProperty("server", out var serverDl) ||
+                !serverDl.TryGetProperty("url", out var urlEl))
+            {
+                AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]No server download found for Minecraft {Markup.Escape(ver)}.[/]");
+                return false;
+            }
+
+            var serverUrl  = urlEl.GetString()!;
+            var serverSha1 = serverDl.TryGetProperty("sha1", out var sha1El) ? sha1El.GetString() : null;
+
+            AnsiConsole.MarkupLine($"[dim]Downloading Minecraft {Markup.Escape(ver)} server JAR...[/]");
+            await AnsiConsole.Progress()
+                .AutoClear(false)
+                .Columns(new TaskDescriptionColumn(), new ProgressBarColumn(), new PercentageColumn())
+                .StartAsync(async ctx =>
+                {
+                    var task = ctx.AddTask($"server-{Markup.Escape(ver)}.jar");
+                    using var resp = await Http.GetAsync(serverUrl, HttpCompletionOption.ResponseHeadersRead);
+                    resp.EnsureSuccessStatusCode();
+                    var total = resp.Content.Headers.ContentLength ?? 0;
+                    task.MaxValue = total > 0 ? total : 1;
+
+                    await using var stream = await resp.Content.ReadAsStreamAsync();
+                    await using var file   = File.Create(serverJar);
+                    var buffer = new byte[81920];
+                    int read;
+                    while ((read = await stream.ReadAsync(buffer)) > 0)
+                    {
+                        await file.WriteAsync(buffer.AsMemory(0, read));
+                        task.Increment(read);
+                    }
+                });
+
+            // Verify SHA-1 if provided
+            if (serverSha1 is not null)
+            {
+                await using var fs = File.OpenRead(serverJar);
+                var hash = Convert.ToHexString(
+                    await System.Security.Cryptography.SHA1.HashDataAsync(fs))
+                    .ToLowerInvariant();
+                if (!hash.Equals(serverSha1, StringComparison.OrdinalIgnoreCase))
+                {
+                    File.Delete(serverJar);
+                    AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]Server JAR hash mismatch — download may be corrupt. Try again.[/]");
+                    return false;
+                }
+            }
+        }
+
+        // 4. Write eula.txt (accepted during wizard)
+        var eulaPath = Path.Combine(instDir, "eula.txt");
+        if (!File.Exists(eulaPath))
+            await File.WriteAllTextAsync(eulaPath, "#By using this McSH server instance you agree to the Minecraft EULA.\neula=true\n");
+
+        // 5. Build JVM arguments
+        var logPath = Path.Combine(instDir, "server.log");
+        var startInfo = new ProcessStartInfo
+        {
+            FileName               = _javaExe,
+            UseShellExecute        = false,
+            CreateNoWindow         = true,
+            WorkingDirectory       = instDir,
+            RedirectStandardOutput = true,
+            RedirectStandardError  = true,
+            RedirectStandardInput  = true,
+        };
+
+        startInfo.ArgumentList.Add($"-Xmx{instance.RamMb}M");
+        startInfo.ArgumentList.Add($"-Xms{instance.RamMb / 2}M");
+        startInfo.ArgumentList.Add("-XX:+UseG1GC");
+        startInfo.ArgumentList.Add("-XX:+ParallelRefProcEnabled");
+        startInfo.ArgumentList.Add("-XX:MaxGCPauseMillis=200");
+        startInfo.ArgumentList.Add("-XX:+UnlockExperimentalVMOptions");
+        startInfo.ArgumentList.Add("-XX:+DisableExplicitGC");
+        startInfo.ArgumentList.Add("-XX:G1HeapRegionSize=8M");
+        startInfo.ArgumentList.Add("-jar");
+        startInfo.ArgumentList.Add("server.jar");
+        startInfo.ArgumentList.Add("--nogui");
+
+        if (!string.IsNullOrWhiteSpace(instance.ExtraJvmArgs))
+            foreach (var a in instance.ExtraJvmArgs.Split(' ', StringSplitOptions.RemoveEmptyEntries))
+                startInfo.ArgumentList.Insert(startInfo.ArgumentList.Count - 2, a); // before -jar
+
+        Process? process;
+        try { process = Process.Start(startInfo); }
+        catch (Exception ex)
+        {
+            AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]Failed to start server:[/] {Markup.Escape(ex.Message)}");
+            return false;
+        }
+        if (process is null) return false;
+
+        // 6. Drain output to log file, tee to channel for ready-detection
+        var logLines = System.Threading.Channels.Channel.CreateUnbounded<string>();
+        _ = Task.Run(async () =>
+        {
+            try
+            {
+                await using var fw = new StreamWriter(logPath, append: false, System.Text.Encoding.UTF8) { AutoFlush = true };
+                var sem = new System.Threading.SemaphoreSlim(1, 1);
+
+                async Task DrainAsync(StreamReader reader)
+                {
+                    string? line;
+                    while ((line = await reader.ReadLineAsync()) is not null)
+                    {
+                        await sem.WaitAsync();
+                        try   { await fw.WriteLineAsync(line); }
+                        finally { sem.Release(); }
+                        logLines.Writer.TryWrite(line);
+                    }
+                }
+
+                await Task.WhenAll(DrainAsync(process.StandardOutput), DrainAsync(process.StandardError));
+            }
+            catch { }
+            finally { logLines.Writer.TryComplete(); }
+        });
+
+        // 7. Wait for "Done" signal (server finished loading)
+        var serverReady = false;
+        await AnsiConsole.Status()
+            .Spinner(Spinner.Known.Dots)
+            .SpinnerStyle(UiTheme.SpinnerStyle)
+            .StartAsync("Starting server...", async ctx =>
+            {
+                using var cts = new System.Threading.CancellationTokenSource(TimeSpan.FromMinutes(5));
+                try
+                {
+                    await foreach (var line in logLines.Reader.ReadAllAsync(cts.Token))
+                    {
+                        if (line.Contains("Done ("))        { serverReady = true; cts.Cancel(); }
+                        else if (line.Contains("Preparing")) ctx.Status = "Preparing world...";
+                        else if (line.Contains("Loading"))   ctx.Status = "Loading...";
+                    }
+                }
+                catch (OperationCanceledException) { }
+            });
+
+        if (!serverReady)
+        {
+            await Task.Delay(200);
+            AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]Server exited during startup (code {process.ExitCode}).[/]");
+            if (File.Exists(logPath))
+                AnsiConsole.MarkupLine($"[dim]Log: {Markup.Escape(logPath)}[/]");
+            return false;
+        }
+
+        _tracker.Register(name, process);
+        AnsiConsole.MarkupLine($"Server [{UiTheme.AccentMarkup}]{Markup.Escape(ver)}[/] is running.");
+        AnsiConsole.MarkupLine($"[dim]Log: {Markup.Escape(logPath)}[/]");
+        AnsiConsole.MarkupLine($"[dim]Use 'console' to attach. Use 'instance stop {Markup.Escape(name)}' to stop.[/]");
+
+        var launchTime = DateTime.UtcNow;
+        _ = Task.Run(async () =>
+        {
+            try { await process.WaitForExitAsync(); } catch { return; }
+            var elapsed  = DateTime.UtcNow - launchTime;
+            var duration = elapsed.TotalMinutes >= 1 ? $"{(int)elapsed.TotalMinutes}m {elapsed.Seconds}s" : $"{(int)elapsed.TotalSeconds}s";
+            AnsiConsole.MarkupLine(process.ExitCode == 0
+                ? $"\n[dim]Server stopped after {duration}.[/]"
+                : $"\n[{UiTheme.AccentMarkup}]Server crashed (code {process.ExitCode}, ran {duration}).[/]");
+            _tracker.Remove(name);
+            ReprintPrompt?.Invoke();
+        });
+
+        return true;
     }
 
     private static async Task AutoBackupWorldsAsync(Instance instance)

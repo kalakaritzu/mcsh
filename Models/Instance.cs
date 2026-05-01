@@ -47,4 +47,9 @@ public class Instance
 
     /// <summary>Command to run after Minecraft exits.</summary>
     public string? PostExitCommand { get; set; }
+
+    // ── Server ────────────────────────────────────────────────────────────────
+
+    /// <summary>True when this instance is a dedicated server rather than a client.</summary>
+    public bool IsServer { get; set; } = false;
 }

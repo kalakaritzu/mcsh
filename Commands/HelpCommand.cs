@@ -40,6 +40,7 @@ public class HelpCommand
 
         table.AddRow($"[{UiTheme.AccentMarkup}]instance list[/]",                          L("help.ref_instance_list"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance create[/]",                        L("help.ref_instance_create"));
+        table.AddRow($"[{UiTheme.AccentMarkup}]instance server[/]",                        L("help.ref_instance_server"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance select [grey]<name>[/][/]",        L("help.ref_instance_select"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance deselect[/]",                      L("help.ref_instance_deselect"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance run [grey][[name]][/][/]",             L("help.ref_instance_run"));
@@ -49,6 +50,7 @@ public class HelpCommand
         table.AddRow($"[{UiTheme.AccentMarkup}]instance rename [grey]<old> <new>[/][/]",   L("help.ref_instance_rename"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance update [grey][[name]][/][/]",       L("help.ref_instance_update"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance worlds [grey][[name]][/][/]",       L("help.ref_instance_worlds"));
+        table.AddRow($"[{UiTheme.AccentMarkup}]instance screenshots [grey][[name]][/][/]",  L("help.ref_instance_screenshots"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance crash [grey][[name]][/][/]",        L("help.ref_instance_crash"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance import [grey]<path.mrpack>[/][/]", L("help.ref_instance_import"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance export [grey][[name]][/][/]",       L("help.ref_instance_export"));
