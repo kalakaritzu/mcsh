@@ -7,7 +7,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>mcsh</AssemblyName>
     <RootNamespace>McSH</RootNamespace>
-    <Version>1.0.5</Version>
+    <Version>1.0.6</Version>
     <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
     <Optimize>true</Optimize>
     <!-- Bundle all DLLs into a single executable — simplifies the MSI and avoids missing-DLL errors -->

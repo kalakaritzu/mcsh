@@ -243,10 +243,6 @@ public class InstanceCommand
                 break;
             }
 
-            case "server":
-                await ServerWizardAsync();
-                break;
-
             default:
                 AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]Unknown subcommand:[/] instance {Markup.Escape(args[0])}");
                 PrintUsage();
@@ -1529,96 +1525,10 @@ public class InstanceCommand
         await Task.CompletedTask;
     }
 
-    // ── server wizard ─────────────────────────────────────────────────────────
-
-    private async Task ServerWizardAsync()
-    {
-        AnsiConsole.WriteLine();
-        AnsiConsole.MarkupLine("[bold]New dedicated server[/]");
-        AnsiConsole.Write(new Rule().RuleStyle("grey dim"));
-        AnsiConsole.WriteLine();
-
-        // Name
-        var name = AnsiConsole.Ask<string>($"[{UiTheme.AccentMarkup}]Server name:[/]");
-        if (name.Equals("cancel", StringComparison.OrdinalIgnoreCase)) return;
-        if (!IsValidName(name)) { AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]Invalid name.[/]"); return; }
-        if (_store.Exists(name)) { AnsiConsole.MarkupLine($"[{UiTheme.AccentMarkup}]Name already in use.[/]"); return; }
-
-        // Minecraft version
-        string mcVersion;
-        string[] versions = [];
-        await AnsiConsole.Status()
-            .Spinner(Spinner.Known.Dots)
-            .SpinnerStyle(UiTheme.SpinnerStyle)
-            .StartAsync(L("instance.fetching_versions"), async _ =>
-            {
-                versions = await _mojang.GetReleaseVersionsAsync();
-            });
-
-        if (versions.Length == 0)
-        {
-            mcVersion = AnsiConsole.Ask<string>($"[{UiTheme.AccentMarkup}]{L("instance.wizard_version_prompt")}[/]");
-            if (mcVersion.Equals("cancel", StringComparison.OrdinalIgnoreCase)) return;
-        }
-        else
-        {
-            var latestLabel = $"latest  [dim]({versions[0]})[/]";
-            var chosen = AnsiConsole.Prompt(
-                new SelectionPrompt<string>()
-                    .Title($"[{UiTheme.AccentMarkup}]{L("instance.wizard_version_prompt")}[/]")
-                    .PageSize(15)
-                    .AddChoices(new[] { latestLabel }.Concat(versions).Append("(cancel)")));
-            if (chosen.Equals("(cancel)", StringComparison.OrdinalIgnoreCase)) return;
-            mcVersion = chosen == latestLabel ? versions[0] : chosen;
-        }
-
-        // RAM
-        var ramLabel = AnsiConsole.Prompt(
-            new SelectionPrompt<string>()
-                .Title($"[{UiTheme.AccentMarkup}]{L("instance.wizard_ram_prompt")}[/]")
-                .AddChoices("1 GB", "2 GB", "4 GB", "6 GB", "8 GB", "12 GB", "16 GB", "(cancel)"));
-        if (ramLabel.Equals("(cancel)", StringComparison.OrdinalIgnoreCase)) return;
-        var ramMb = int.Parse(ramLabel.Split(' ')[0]) * 1024;
-
-        // EULA
-        AnsiConsole.WriteLine();
-        AnsiConsole.MarkupLine("[dim]By continuing you agree to the Minecraft End User License Agreement.[/]");
-        AnsiConsole.MarkupLine("[dim]https://www.minecraft.net/eula[/]");
-        AnsiConsole.WriteLine();
-        if (!AnsiConsole.Confirm($"[{UiTheme.AccentMarkup}]I agree to the Minecraft EULA[/]")) return;
-
-        _store.Save(new Instance
-        {
-            Name             = name,
-            MinecraftVersion = mcVersion,
-            Loader           = ModLoader.Vanilla,
-            RamMb            = ramMb,
-            IsServer         = true,
-            CreatedAt        = DateTime.UtcNow,
-        });
-
-        AnsiConsole.WriteLine();
-        AnsiConsole.MarkupLine($"Server [{UiTheme.AccentMarkup}]{Markup.Escape(name)}[/] created.");
-        AnsiConsole.MarkupLine($"  Version : {mcVersion}");
-        AnsiConsole.MarkupLine($"  RAM     : {ramLabel}");
-        AnsiConsole.WriteLine();
-
-        if (AnsiConsole.Confirm($"[{UiTheme.AccentMarkup}]Start the server now?[/]"))
-        {
-            var inst = _store.Get(name)!;
-            _state.ActiveInstance = name;
-            await _launcher.PrepareAndLaunchAsync(inst);
-        }
-        else
-        {
-            AnsiConsole.MarkupLine($"[dim]Run 'instance run {Markup.Escape(name)}' when ready.[/]");
-        }
-    }
-
     private static void PrintUsage()
     {
         AnsiConsole.MarkupLine($"Usage: [{UiTheme.AccentMarkup}]instance[/] [grey]<subcommand> [[args]][/]");
-        AnsiConsole.MarkupLine($"[dim]Subcommands:[/] list, create, server, select, run, stop, kill, delete, rename, clone, import, export, backup, update, worlds, screenshots, crash, config, mrpack, prism, open, info");
+        AnsiConsole.MarkupLine($"[dim]Subcommands:[/] list, create, select, run, stop, kill, delete, rename, clone, import, export, backup, update, worlds, screenshots, crash, config, mrpack, prism, open, info");
         AnsiConsole.MarkupLine($"[dim]Aliases:[/] [{UiTheme.AccentMarkup}]i[/] [{UiTheme.AccentMarkup}]ins[/] [{UiTheme.AccentMarkup}]inst[/]  [dim]· type 'ref' for full details[/]");
     }
 }

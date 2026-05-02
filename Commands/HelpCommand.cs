@@ -40,7 +40,6 @@ public class HelpCommand
 
         table.AddRow($"[{UiTheme.AccentMarkup}]instance list[/]",                          L("help.ref_instance_list"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance create[/]",                        L("help.ref_instance_create"));
-        table.AddRow($"[{UiTheme.AccentMarkup}]instance server[/]",                        L("help.ref_instance_server"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance select [grey]<name>[/][/]",        L("help.ref_instance_select"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance deselect[/]",                      L("help.ref_instance_deselect"));
         table.AddRow($"[{UiTheme.AccentMarkup}]instance run [grey][[name]][/][/]",             L("help.ref_instance_run"));
